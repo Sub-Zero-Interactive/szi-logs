@@ -8,12 +8,12 @@ function SendLog(name, title, color, message, tagEveryone)
             ['color'] = Config.Colors[color] or Config.Colors.default,
             ['footer'] = {
                 ['text'] = Config.ServerName.. " | SZI Logs | ".. os.date(),
-                ['icon_url'] = 'https://i.imgur.com/tPccWVv.png',
+                ['icon_url'] = Config.ServerLogo,
             },
             ['description'] = message,
             ['author'] = {
                 ['name'] = name .. ' | Logs',
-                ['icon_url'] = Config.ServerLogo,
+                ['icon_url'] = 'https://i.imgur.com/tPccWVv.png',
             },
         }
     }
