@@ -1,3 +1,8 @@
+if Config.UseESX then
+    ESX = nil
+    TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
+end
+
 function SendLog(name, title, color, message, tagEveryone)      
 
     local tag = tagEveryone or false
@@ -24,25 +29,40 @@ function SendLog(name, title, color, message, tagEveryone)
     end
 end
 
-RegisterCommand("embed",  function(source, args, rawCommand)
+
+------- Args -------
+-- args[1] = Weebhook
+-- args[2] = Color
+---------------------
+RegisterCommand("embed",  function(source, args, rawCommand) 
 	SendLog(args[1], 'Test Webhook', args[2], 'Webhook setup successfully',false)
 end, false)
 
 if Config.DefaultEvents then
     if Config.DefaultEvents.chat then
         AddEventHandler('chatMessage', function(playerId, playerName, message)
-            SendLog("Chat", "New Message", "green", "**ID**:```".. playerId .. "```\n**Name**:```"..playerName .. "```\n**Message**:```".. message .. "```")
+            if Config.UseESX then
+                local xPlayer = ESX.GetPlayerFromId(source)
+                SendLog("Chat", "New Message", "green", "**ID**:```diff\n+ ".. playerId .. "```\n**OOC Name**:```diff\n+".. GetPlayerName(playerId) ..  "```\n**In-Game Name**:```diff\n+".. xPlayer.getName() .. "```\n**Message**:```diff\n- ".. message .. "```")
+            else 
+                SendLog("Chat", "New Message", "green", "**ID**:```diffr\n+ ".. playerId .. "```\n**Name**:```diff\n+"..playerName .. "```\n**Message**:```diff- ".. message .. "```")
+            end
         end)
     end
     if Config.DefaultEvents.playerDropped then
         AddEventHandler('playerDropped', function (reason)
-         SendLog("UserActions", "User Dropped", "red", "**ID**:```".. source .. "```\n**Name**:```".. GetPlayerName(source) .. "```\n**Reason**:```".. reason .. "```")
+            if Config.UseESX then
+                local xPlayer = ESX.GetPlayerFromId(source)
+                SendLog("UserActions", "User Dropped", "red", "**ID**:```diff\n+ ".. source .. "```\n**OOC Name**:```diff\n+".. GetPlayerName(source) ..  "```\n**In-Game Name**:```diff\n+".. xPlayer.getName() .. "```\n**Reason**:```diff\n- ".. reason .. "```")
+            else 
+                SendLog("UserActions", "User Dropped", "red", "**ID**:```".. source .. "```\n**Name**:```".. GetPlayerName(source) .. "```\n**Reason**:```".. reason .. "```")
+            end
         end)
     end
 
     if Config.DefaultEvents.playerJoining then
         AddEventHandler('playerJoining', function ()
-            SendLog("UserActions", "User Joined", "green", "**ID**:```".. source .. "```\n**Name**:```".. GetPlayerName(source) .."```")
+            SendLog("UserActions", "User Joined", "green", "**ID**:```diff\n+ ".. source .. "```\n**Name**:```diff\n+ ".. GetPlayerName(source) .."```")
         end)
     end
     if Config.DefaultEvents.playerJoining then
