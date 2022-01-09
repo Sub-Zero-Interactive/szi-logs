@@ -12,5 +12,3 @@ server_scripts {
 
 server_exports {"SendLog"}
 
-
-
