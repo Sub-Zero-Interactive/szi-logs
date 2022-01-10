@@ -42,7 +42,7 @@ if Config.DefaultEvents then
     if Config.DefaultEvents.chat then
         AddEventHandler('chatMessage', function(playerId, playerName, message)
             if Config.UseESX then
-                local xPlayer = ESX.GetPlayerFromId(source)
+                local xPlayer = ESX.GetPlayerFromId(playerId)
                 SendLog("Chat", "New Message", "green", "**ID**:```diff\n+ ".. playerId .. "```\n**OOC Name**:```diff\n+".. GetPlayerName(playerId) ..  "```\n**In-Game Name**:```diff\n+".. xPlayer.getName() .. "```\n**Message**:```diff\n- ".. message .. "```")
             else 
                 SendLog("Chat", "New Message", "green", "**ID**:```diffr\n+ ".. playerId .. "```\n**Name**:```diff\n+"..playerName .. "```\n**Message**:```diff- ".. message .. "```")
